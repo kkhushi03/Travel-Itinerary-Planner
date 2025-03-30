@@ -9,6 +9,10 @@ def get_user_input():
     budget = st.selectbox("Budget preference:", ["Budget", "Mid-range", "Luxury"])
     preferences = st.multiselect("Select your interests:", 
                                  ["Nature", "Culture", "Adventure", "Food", "Shopping", "Relaxation"])
+    
+    # Manually input attractions (comma-separated)
+    attractions = st.text_area("Enter top attractions (comma-separated):")
+    attraction_list = [attr.strip() for attr in attractions.split(",") if attr.strip()]
 
     if st.button("Generate Itinerary"):
         return {
@@ -16,7 +20,7 @@ def get_user_input():
             "trip_duration": trip_duration,
             "budget": budget,
             "preferences": preferences,
-            "attractions": []  # This will be filled dynamically later
+            "attractions": attraction_list  # Stores manually entered attractions
         }
     
     return None
