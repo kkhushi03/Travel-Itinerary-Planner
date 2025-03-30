@@ -1,7 +1,10 @@
-import groq
-from config import GROQ_API_KEY  # Import the API key
+import streamlit as st
+import openai  # If using Groq API
 
-client = groq.Client(api_key=GROQ_API_KEY)  # Use the key
+# Retrieve API key from Streamlit secrets
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+
+openai.api_key = GROQ_API_KEY
 
 SYSTEM_PROMPT = """
 You are an AI-powered travel planner. Your goal is to create a personalized travel itinerary...
@@ -19,8 +22,8 @@ def generate_itinerary(user_details):
     Ensure a mix of activities per day, proper timing, and logical grouping of activities.
     """
 
-    response = client.chat.completions.create(
-        model="llama3-8b-8192",
+    response = openai.chat.completions.create(
+        model="gpt-4",
         messages=[{"role": "system", "content": SYSTEM_PROMPT},
                   {"role": "user", "content": prompt}]
     )
