@@ -1,7 +1,7 @@
 import groq
-from config import GROQ_API_KEY
+from config import GROQ_API_KEY  # Import the API key
 
-client = groq.Client(api_key=GROQ_API_KEY)
+client = groq.Client(api_key=GROQ_API_KEY)  # Use the key
 
 SYSTEM_PROMPT = """
 You are an AI-powered travel planner. Your goal is to create a personalized travel itinerary...
