@@ -7,7 +7,7 @@ GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 # Create a client with the correct Groq API base
 client = openai.OpenAI(
     api_key=GROQ_API_KEY,
-    base_url="https://api.groq.com/openai/v1"
+    base_url="https://console.groq.com/keys"
 )
 
 def generate_itinerary(user_details):
