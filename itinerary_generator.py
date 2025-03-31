@@ -1,9 +1,9 @@
 import streamlit as st
 import requests
-import json
 
-# Retrieve API key from Streamlit secrets
-GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+# App title and description
+st.title("AI Travel Itinerary Planner")
+st.write("Generate personalized travel itineraries based on your preferences!")
 
 def generate_itinerary(user_details):
     """Generates a personalized travel itinerary using Groq API."""
@@ -18,7 +18,7 @@ def generate_itinerary(user_details):
     """
     
     headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Authorization": f"Bearer {st.secrets['GROQ_API_KEY']}",
         "Content-Type": "application/json"
     }
     
@@ -28,16 +28,50 @@ def generate_itinerary(user_details):
     }
     
     try:
+        # Make sure to use POST request method
         response = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers=headers,
             json=data
         )
         
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        result = response.json()
+        # Debug information
+        st.write(f"Status Code: {response.status_code}")
+        st.write(f"Response: {response.text}")
         
-        return result['choices'][0]['message']['content']
+        if response.status_code == 200:
+            result = response.json()
+            return result['choices'][0]['message']['content']
+        else:
+            return f"Error: {response.status_code} - {response.text}"
     
     except Exception as e:
         return f"Error generating itinerary: {str(e)}"
+
+# Create form to collect user inputs
+with st.form("travel_form"):
+    destination = st.text_input("Destination")
+    trip_duration = st.number_input("Trip Duration (days)", min_value=1, max_value=30, value=3)
+    budget = st.selectbox("Budget", ["Budget", "Moderate", "Luxury"])
+    preferences = st.text_input("Your travel interests (e.g., food, history, adventure)")
+    
+    # Allow multiple attraction selections
+    attractions_input = st.text_input("Suggested attractions (comma-separated)")
+    attractions = [attr.strip() for attr in attractions_input.split(",")] if attractions_input else []
+    
+    submitted = st.form_submit_button("Generate Itinerary")
+    
+    if submitted:
+        user_details = {
+            "destination": destination,
+            "trip_duration": trip_duration,
+            "budget": budget,
+            "preferences": preferences,
+            "attractions": attractions
+        }
+        
+        with st.spinner("Generating your personalized itinerary..."):
+            itinerary = generate_itinerary(user_details)
+        
+        st.markdown("## Your Personalized Travel Itinerary 📜")
+        st.markdown(itinerary)
