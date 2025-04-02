@@ -20,3 +20,5 @@ This project is an **AI-powered travel planner** that generates **personalized t
 - **LangChain** (For NLP-driven query generation)
 
 ---
+
+checkout the deployed streamlit version: https://travel-itinerary-planner-khushi.streamlit.app/
