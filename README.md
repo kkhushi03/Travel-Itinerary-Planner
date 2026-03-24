@@ -17,7 +17,6 @@ This project is an **AI-powered travel planner** that generates **personalized t
 - **Streamlit** (Frontend)
 - **Groq API** (AI-powered itinerary generation)
 - **Joblib** (For model management)
-- **LangChain** (For NLP-driven query generation)
 
 ---
 
